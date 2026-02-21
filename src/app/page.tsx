@@ -30,11 +30,14 @@ export default function ERPPage() {
 // Loading Screen
 function LoadingScreen() {
   return (
-    <div className="min-h-screen bg-blue-900 flex items-center justify-center">
+    <div className="min-h-screen flex items-center justify-center" style={{background: 'linear-gradient(135deg, #0f1f3d 0%, #1a3260 100%)'}}>
       <div className="text-center text-white">
-        <div className="w-16 h-16 border-4 border-white border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-        <div className="text-xl font-bold">Podar Learn School ERP</div>
-        <div className="text-blue-300">Loading...</div>
+        <div className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-5" style={{background: 'rgba(232,184,75,0.15)', border: '2px solid rgba(232,184,75,0.4)'}}>
+          <span style={{fontSize: '2rem'}}>🎓</span>
+        </div>
+        <div className="w-10 h-10 border-2 border-t-transparent rounded-full animate-spin mx-auto mb-4" style={{borderColor: '#e8b84b', borderTopColor: 'transparent'}}></div>
+        <div className="text-xl font-bold tracking-wide">Podar Learn School ERP</div>
+        <div className="mt-1 text-sm" style={{color: 'rgba(232,184,75,0.7)'}}>Loading your dashboard...</div>
       </div>
     </div>
   )
@@ -127,60 +130,60 @@ function MainApp() {
   return (
     <div className="min-h-screen bg-gray-100 flex">
       {/* Sidebar */}
-      <div className="w-64 bg-blue-900 text-white flex flex-col min-h-screen fixed left-0 top-0 z-40">
-        <div className="p-4 border-b border-blue-800">
+      <div className="w-64 text-white flex flex-col min-h-screen fixed left-0 top-0 z-40" style={{background:'#0f1f3d'}}>
+        {/* Logo */}
+        <div className="px-6 py-6" style={{borderBottom:'1px solid rgba(255,255,255,0.08)'}}>
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center">
-              <span className="text-blue-900 text-xl font-bold">P</span>
+            <div className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0" style={{background:'rgba(232,184,75,0.15)',border:'1.5px solid rgba(232,184,75,0.35)'}}>
+              <span style={{fontSize:'1.4rem'}}>🎓</span>
             </div>
             <div>
-              <div className="font-bold">{store.currentSchool?.name || 'Podar Learn School'}</div>
-              <div className="text-amber-400 text-sm">Niphad, Nashik</div>
-              <div className="text-blue-300 text-xs">Year: {store.currentSchool?.academicYear || '2026-27'}</div>
+              <div className="font-bold text-sm leading-tight text-white">{store.currentSchool?.name || 'Podar Learn School'}</div>
+              <div className="text-xs mt-0.5" style={{color:'#e8b84b'}}>Niphad, Nashik</div>
+              <div className="text-xs" style={{color:'rgba(255,255,255,0.35)'}}>Year: {store.currentSchool?.academicYear || '2026-27'}</div>
             </div>
           </div>
         </div>
         
-        <nav className="flex-1 p-3">
+        <nav className="flex-1 px-3 py-4">
+          <div className="text-xs font-semibold mb-2 px-3" style={{color:'rgba(255,255,255,0.25)',letterSpacing:'2px',textTransform:'uppercase'}}>Main Menu</div>
           {navItems.map((item) => (
             <button
               key={item.id}
               onClick={() => store.setCurrentTab(item.id)}
-              className={`w-full text-left px-4 py-3 rounded-lg mb-1 flex items-center gap-3 transition ${
-                store.currentTab === item.id
-                  ? 'bg-amber-500 text-white'
-                  : 'hover:bg-blue-800 text-blue-100'
-              }`}
+              className="w-full text-left px-3 py-2.5 rounded-lg mb-0.5 flex items-center gap-3 transition-all text-sm font-medium"
+              style={store.currentTab === item.id
+                ? {background:'rgba(232,184,75,0.12)', color:'#e8b84b', borderLeft:'3px solid #e8b84b', paddingLeft:'9px'}
+                : {color:'rgba(255,255,255,0.55)'}}
             >
-              <span className="text-lg">{item.icon}</span>
-              <span className="font-medium">{item.label}</span>
+              <span style={{fontSize:'1.1rem'}}>{item.icon}</span>
+              <span>{item.label}</span>
             </button>
           ))}
         </nav>
         
-        <div className="p-4 border-t border-blue-800">
+        <div className="px-4 py-4" style={{borderTop:'1px solid rgba(255,255,255,0.08)'}}>
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 bg-amber-500 rounded-full flex items-center justify-center">
-              <span className="text-white font-bold">
-                {store.currentUser?.name?.charAt(0) || 'A'}
-              </span>
+            <div className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 font-bold text-sm" style={{background:'#e8b84b',color:'#0f1f3d'}}>
+              {store.currentUser?.name?.charAt(0) || 'A'}
             </div>
             <div>
-              <div className="font-medium">{store.currentUser?.name || 'Accountant'}</div>
-              <div className="text-blue-300 text-sm capitalize">{store.currentUser?.role || 'Admin'}</div>
+              <div className="font-semibold text-sm text-white">{store.currentUser?.name || 'Accountant'}</div>
+              <div className="text-xs capitalize" style={{color:'rgba(255,255,255,0.4)'}}>{store.currentUser?.role || 'Admin'}</div>
             </div>
           </div>
           <button
             onClick={() => store.logout()}
-            className="w-full bg-blue-800 hover:bg-blue-700 text-white py-2 rounded-lg text-sm transition"
+            className="w-full py-2 rounded-lg text-xs font-semibold transition-all"
+            style={{background:'rgba(255,255,255,0.07)',color:'rgba(255,255,255,0.6)'}}
           >
-            Logout
+            Sign Out
           </button>
         </div>
       </div>
       
       {/* Main Content */}
-      <div className="flex-1 ml-64 p-6">
+      <div className="flex-1 ml-64 p-6" style={{background:"#f0f4f8",minHeight:"100vh"}}>
         {store.currentTab === 'dashboard' && <Dashboard />}
         {store.currentTab === 'students' && <StudentManagement />}
         {store.currentTab === 'fees' && <FeeCollection />}
@@ -206,20 +209,23 @@ function Dashboard() {
   return (
     <div className="space-y-6">
       {/* Welcome Banner */}
-      <div className="bg-gradient-to-r from-blue-900 to-blue-800 rounded-2xl p-6 text-white">
-        <div className="text-2xl font-bold">{greeting()}, {store.currentUser?.name || 'Accountant'}! 👨‍💼</div>
-        <div className="text-blue-200 mt-1">Welcome to {store.currentSchool?.name || 'Podar Learn School Niphad'}</div>
-        <div className="text-amber-300 font-medium">Academic Year: {store.currentSchool?.academicYear || '2026-27'}</div>
-        <div className="flex gap-3 mt-4">
+      <div className="rounded-2xl p-7 text-white relative overflow-hidden" style={{background:'linear-gradient(135deg, #0f1f3d 0%, #1a3260 100%)'}}>
+        <div className="absolute top-0 right-0 w-48 h-48 rounded-full opacity-5" style={{background:'#e8b84b',transform:'translate(30%,-30%)'}}></div>
+        <div className="text-xs font-semibold uppercase tracking-widest mb-2" style={{color:'rgba(232,184,75,0.7)'}}>Welcome back</div>
+        <div className="text-2xl font-bold">{greeting()}, {store.currentUser?.name || 'Accountant'}! 👋</div>
+        <div className="mt-1 text-sm" style={{color:'rgba(255,255,255,0.55)'}}>{store.currentSchool?.name || 'Podar Learn School Niphad'} &nbsp;·&nbsp; Academic Year: {store.currentSchool?.academicYear || '2026-27'}</div>
+        <div className="flex gap-3 mt-5">
           <button
             onClick={() => store.setCurrentTab('students')}
-            className="bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded-lg font-medium transition"
+            className="px-5 py-2 rounded-lg font-semibold text-sm transition-all"
+            style={{background:'#e8b84b',color:'#0f1f3d'}}
           >
             + New Admission
           </button>
           <button
             onClick={() => store.setCurrentTab('fees')}
-            className="bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg font-medium transition"
+            className="px-5 py-2 rounded-lg font-semibold text-sm transition-all"
+            style={{background:'rgba(255,255,255,0.1)',color:'white',border:'1px solid rgba(255,255,255,0.2)'}}
           >
             Collect Fee
           </button>
@@ -257,14 +263,14 @@ function Dashboard() {
       {/* Charts Row */}
       <div className="grid grid-cols-2 gap-6">
         {/* Monthly Collection */}
-        <div className="bg-white rounded-xl p-6 shadow-sm">
-          <h3 className="font-bold text-lg mb-4">Monthly Collection</h3>
+        <div className="rounded-2xl p-6" style={{background:"white",boxShadow:"0 2px 16px rgba(0,0,0,0.06)"}}>
+          <h3 className="font-bold text-lg mb-4" style={{color:"#0f1f3d"}}>Monthly Collection</h3>
           <div className="text-3xl font-bold text-green-600">{fm(stats.monthlyCollection)}</div>
           <div className="text-gray-500 text-sm">This month's total collection</div>
         </div>
         
         {/* Class Distribution */}
-        <div className="bg-white rounded-xl p-6 shadow-sm">
+        <div className="rounded-2xl p-6" style={{background:"white",boxShadow:"0 2px 16px rgba(0,0,0,0.06)"}}>
           <h3 className="font-bold text-lg mb-4">Students by Class</h3>
           <div className="space-y-2">
             {defaultClasses.slice(0, 5).map((cls) => {
@@ -288,7 +294,7 @@ function Dashboard() {
       </div>
       
       {/* Recent Payments */}
-      <div className="bg-white rounded-xl p-6 shadow-sm">
+      <div className="rounded-2xl p-6" style={{background:"white",boxShadow:"0 2px 16px rgba(0,0,0,0.06)"}}>
         <h3 className="font-bold text-lg mb-4">Recent Payments</h3>
         {store.payments.length === 0 ? (
           <div className="text-center py-8 text-gray-500">
@@ -324,18 +330,19 @@ function Dashboard() {
 
 // Stat Card Component
 function StatCard({ title, value, color, subtitle }: { title: string; value: string; color: string; subtitle: string }) {
-  const colors = {
-    blue: 'bg-blue-900',
-    green: 'bg-green-600',
-    amber: 'bg-amber-500',
-    purple: 'bg-purple-600'
+  const styles: Record<string, {bg: string, accent: string, icon: string}> = {
+    blue:   {bg:'#0f1f3d', accent:'rgba(232,184,75,0.2)', icon:'👨‍🎓'},
+    green:  {bg:'#166534', accent:'rgba(74,222,128,0.2)', icon:'💰'},
+    amber:  {bg:'#92400e', accent:'rgba(251,191,36,0.2)', icon:'⚠️'},
+    purple: {bg:'#4c1d95', accent:'rgba(167,139,250,0.2)', icon:'📅'},
   }
-  
+  const s = styles[color] || styles.blue
   return (
-    <div className={`${colors[color]} text-white rounded-xl p-5`}>
-      <div className="text-sm opacity-80">{title}</div>
-      <div className="text-2xl font-bold mt-1">{value}</div>
-      <div className="text-xs opacity-70 mt-1">{subtitle}</div>
+    <div className="rounded-2xl p-5 text-white relative overflow-hidden" style={{background: s.bg, boxShadow:'0 4px 20px rgba(0,0,0,0.12)'}}>
+      <div className="absolute top-3 right-4 text-2xl opacity-20" aria-hidden="true">{s.icon}</div>
+      <div className="text-xs font-semibold uppercase tracking-widest mb-2" style={{color:'rgba(255,255,255,0.55)'}}>{title}</div>
+      <div className="text-2xl font-bold">{value}</div>
+      <div className="text-xs mt-1" style={{color:'rgba(255,255,255,0.5)'}}>{subtitle}</div>
     </div>
   )
 }
@@ -363,17 +370,17 @@ function StudentManagement() {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-blue-900">Student Management</h1>
+        <h1 className="text-2xl font-bold" style={{color:"#0f1f3d"}}>Student Management</h1>
         <button
           onClick={() => setShowAdd(true)}
-          className="bg-blue-900 text-white px-4 py-2 rounded-lg hover:bg-blue-800 transition flex items-center gap-2"
+          className="text-white px-5 py-2 rounded-lg font-semibold text-sm flex items-center gap-2 transition-all" style={{background:"#0f1f3d"}}
         >
           <span>+ New Admission</span>
         </button>
       </div>
       
       {/* Filters */}
-      <div className="bg-white rounded-xl p-4 shadow-sm">
+      <div className="rounded-2xl p-4" style={{background:"white",boxShadow:"0 2px 16px rgba(0,0,0,0.06)"}}>
         <div className="flex gap-4">
           <div className="flex-1">
             <input
@@ -408,7 +415,7 @@ function StudentManagement() {
       </div>
       
       {/* Students Table */}
-      <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+      <div className="rounded-2xl overflow-hidden" style={{background:"white",boxShadow:"0 2px 16px rgba(0,0,0,0.06)"}}>
         {filteredStudents.length === 0 ? (
           <div className="text-center py-12">
             <div className="text-6xl mb-4">👨‍🎓</div>
@@ -418,7 +425,7 @@ function StudentManagement() {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-blue-900 text-white">
+              <thead style={{background:"#0f1f3d",color:"white"}}>
                 <tr>
                   <th className="px-4 py-3 text-left text-sm font-medium">Admission No</th>
                   <th className="px-4 py-3 text-left text-sm font-medium">Student Name</th>
@@ -865,7 +872,7 @@ function FeeCollection() {
   
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-blue-900">Fee Collection</h1>
+      <h1 className="text-2xl font-bold" style={{color:"#0f1f3d"}}>Fee Collection</h1>
       
       <div className="grid grid-cols-3 gap-6">
         {/* Payment Form */}
@@ -990,7 +997,7 @@ function FeeCollection() {
             
             <button
               onClick={handlePayment}
-              className="w-full bg-green-600 text-white py-3 rounded-lg font-medium hover:bg-green-700 transition"
+              className="w-full text-white py-3 rounded-lg font-semibold transition-all" style={{background:"#166534"}}
             >
               Generate Receipt
             </button>
@@ -998,7 +1005,7 @@ function FeeCollection() {
         </div>
         
         {/* Recent Payments */}
-        <div className="bg-white rounded-xl p-6 shadow-sm">
+        <div className="rounded-2xl p-6" style={{background:"white",boxShadow:"0 2px 16px rgba(0,0,0,0.06)"}}>
           <h2 className="font-bold mb-4">Recent Payments</h2>
           
           {store.payments.length === 0 ? (
@@ -1204,7 +1211,7 @@ function Reports() {
       </div>
       
       {/* Defaulters List */}
-      <div className="bg-white rounded-xl shadow-sm">
+      <div className="rounded-2xl" style={{background:"white",boxShadow:"0 2px 16px rgba(0,0,0,0.06)"}}>
         <div className="p-4 border-b">
           <h2 className="font-bold text-lg">Defaulters List</h2>
           <p className="text-gray-500 text-sm">Students with pending fees</p>
@@ -1294,10 +1301,10 @@ function Settings() {
   
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-blue-900">Settings</h1>
+      <h1 className="text-2xl font-bold" style={{color:"#0f1f3d"}}>Settings</h1>
       
       {/* School Info */}
-      <div className="bg-white rounded-xl p-6 shadow-sm">
+      <div className="rounded-2xl p-6" style={{background:"white",boxShadow:"0 2px 16px rgba(0,0,0,0.06)"}}>
         <h2 className="font-bold text-lg mb-4">School Information</h2>
         
         <div className="grid grid-cols-2 gap-4">
@@ -1329,7 +1336,7 @@ function Settings() {
       </div>
       
       {/* Data Management */}
-      <div className="bg-white rounded-xl p-6 shadow-sm">
+      <div className="rounded-2xl p-6" style={{background:"white",boxShadow:"0 2px 16px rgba(0,0,0,0.06)"}}>
         <h2 className="font-bold text-lg mb-4">Data Management</h2>
         
         <div className="grid grid-cols-3 gap-4">
@@ -1371,7 +1378,7 @@ function Settings() {
       </div>
       
       {/* Statistics */}
-      <div className="bg-white rounded-xl p-6 shadow-sm">
+      <div className="rounded-2xl p-6" style={{background:"white",boxShadow:"0 2px 16px rgba(0,0,0,0.06)"}}>
         <h2 className="font-bold text-lg mb-4">Data Statistics</h2>
         
         <div className="grid grid-cols-4 gap-4">
