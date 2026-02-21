@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
+import { persist, createJSONStorage } from 'zustand/middleware'
 import { Student, Payment, School, User, FeeStructure, Expense, Attendance, Notification, Settings } from '@/types'
 
 // Generate unique IDs
@@ -78,8 +78,10 @@ interface ERPState {
   currentSchool: School | null
   currentUser: User | null
   currentTab: string
+  hydrated: boolean
   
   // Actions
+  setHydrated: (state: boolean) => void
   setCurrentTab: (tab: string) => void
   login: (email: string, password: string) => boolean
   logout: () => void
@@ -154,6 +156,10 @@ export const useERPStore = create<ERPState>()(
       currentSchool: defaultSchool,
       currentUser: null,
       currentTab: 'dashboard',
+      hydrated: false,
+      
+      // Hydration
+      setHydrated: (state) => set({ hydrated: state }),
       
       // UI Actions
       setCurrentTab: (tab) => set({ currentTab: tab }),
@@ -166,7 +172,7 @@ export const useERPStore = create<ERPState>()(
         }
         // Demo login
         if (email === 'admin' || email === 'accountant') {
-          set({ currentUser: { ...defaultUser, role: email === 'admin' ? 'admin' : 'accountant' } })
+          set({ currentUser: { ...defaultUser, name: email === 'admin' ? 'Admin' : 'Accountant', role: email === 'admin' ? 'admin' : 'accountant' } })
           return true
         }
         return false
@@ -231,7 +237,7 @@ export const useERPStore = create<ERPState>()(
         const paid = state.payments
           .filter(p => p.studentId === studentId && p.status === 'Completed')
           .reduce((sum, p) => sum + p.amount, 0)
-        return student.fee - student.concession - paid
+        return student.fee - (student.concession || 0) - paid
       },
       
       // Payment Actions
@@ -388,6 +394,7 @@ export const useERPStore = create<ERPState>()(
     }),
     {
       name: 'podar-erp-storage',
+      storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({
         schools: state.schools,
         users: state.users,
@@ -397,8 +404,13 @@ export const useERPStore = create<ERPState>()(
         expenses: state.expenses,
         attendance: state.attendance,
         notifications: state.notifications,
-        settings: state.settings
-      })
+        settings: state.settings,
+        currentUser: state.currentUser,
+        currentTab: state.currentTab
+      }),
+      onRehydrateStorage: () => (state) => {
+        state?.setHydrated(true)
+      }
     }
   )
 )

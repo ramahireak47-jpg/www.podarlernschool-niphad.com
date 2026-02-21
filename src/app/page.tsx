@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useRef } from 'react'
 import { useERPStore, defaultClasses, defaultSections } from '@/lib/store'
 import { QRCodeSVG } from 'qrcode.react'
 
@@ -11,19 +11,16 @@ const fm = (n: number) => '₹' + n.toLocaleString('en-IN')
 const fd = (d: string) => d ? new Date(d).toLocaleDateString('en-IN') : '-'
 
 export default function ERPPage() {
-  const store = useERPStore()
-  const [mounted, setMounted] = useState(false)
+  const hydrated = useERPStore((state) => state.hydrated)
+  const currentUser = useERPStore((state) => state.currentUser)
   
-  // Handle hydration
-  useEffect(() => {
-    const timer = setTimeout(() => setMounted(true), 0)
-    return () => clearTimeout(timer)
-  }, [])
-  
-  if (!mounted) return <LoadingScreen />
+  // Wait for hydration
+  if (!hydrated) {
+    return <LoadingScreen />
+  }
   
   // Check login
-  if (!store.currentUser) {
+  if (!currentUser) {
     return <LoginScreen />
   }
   
